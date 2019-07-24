@@ -1,0 +1,109 @@
+\documentclass[master=mai,masteroption=ecs]{kulemt}
+\setup{title={Siamese multi-hop attention for
+cross-modal retrieval},
+  author={Gorjan Radevski},
+  promotor={Prof. Marie-Francine Moens},
+  assessor={},
+  assistant={Guillem Collel Taleda}}
+% The following \setup may be removed entirely if no filing card is wanted
+\setup{filingcard,
+  translatedtitle=,
+  udc=621.3,
+  shortabstract={Here comes a very short abstract, containing no more than 500
+    words. \LaTeX\ commands can be used here. Blank lines (or the command
+    \texttt{\string\pa r}) are not allowed!
+    \endgraf \lipsum[2]}}
+% Uncomment the next line for generating the cover page
+%\setup{coverpageonly}
+% Uncomment the next \setup to generate only the first pages (e.g., if you
+% are a Word user. 
+%\setup{frontpagesonly}
+
+% Choose the main text font (e.g., Latin Modern)
+\setup{font=lm}
+
+% If you want to include other LaTeX packages, do it here. 
+% Float to bind tables to their sections
+\usepackage{float}
+% Packages to display two images within a figure one next to the other
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Finally the hyperref package is used for pdf files.
+% This can be commented out for printed versions.
+\usepackage[pdfusetitle,colorlinks,plainpages=false]{hyperref}
+
+%%%%%%%
+% The lipsum package is used to generate random text.
+% You never need this in a real master's thesis text!
+\IfFileExists{lipsum.sty}%
+ {\usepackage{lipsum}\setlipsumdefault{11-13}}%
+ {\newcommand{\lipsum}[1][11-13]{\par And some text: lipsum ##1.\par}}
+%%%%%%%
+
+%\includeonly{chap-n}
+\begin{document}
+
+\begin{preface}
+  I would like to thank everybody who kept me busy the last year,
+especially my promoter and my assistants. I would also like to thank the
+  jury for reading the text. 
+\end{preface}
+
+\tableofcontents*
+
+\begin{abstract}
+In this thesis, the problem of cross-modal retrieval in the image-text case is studied. I leverage the fact that most of the time, multiple entities are present in the modalities, so a model that is able to focus at different aspects of each individual modality should overpower simpler models that "look only once". Moreover, most of the approaches that tackle the cross-modal retrieval problem are used as a black box, and it is indistinguishable how a corresponding image was matched with the sentence query and vice versa. Lastly, the cross-modal retrieval datasets are small and the training data is scarce. Due to that, in this thesis a heavy emphasis is placed on transferring the knowledge from models that were trained on millions of data samples on different tasks. In this thesis, I present \textit{Siamese multi-hop attention} which overcomes the aforementioned obstacles when doing cross-modal retrieval in the image-text case. \textit{SMHA} is tested on a variety of datasets that include both small ones Pascal1k, Flickr8k as well as medium to large ones Flickr30k and achieves state-of-the-art results on most of them.
+\end{abstract}
+
+% A list of figures and tables is optional
+\listoffigures
+\listoftables
+% If you only have a few figures and tables you can use the following instead
+% \listoffiguresandtables
+% The list of symbols is also optional.
+% This list must be created manually, e.g., as follows:
+\chapter{List of Abbreviations}% and Symbols}
+\section*{Abbreviations}
+\begin{flushleft}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{@{}p{12mm}X@{}}
+    \textit{SMHA}   & Siamese multi-hop attention \\
+    \textit{SOTA}   & State of the art
+  \end{tabularx}
+\end{flushleft}
+%\section*{Symbols}
+%\begin{flushleft}
+  %\renewcommand{\arraystretch}{1.1}
+  %\begin{tabularx}{\textwidth}{@{}p{12mm}X@{}}
+    %SOTA    & ``State of the art''\\
+  %\end{tabularx}
+%\end{flushleft}
+
+% Now comes the main text
+\mainmatter
+
+\include{Chapters/intro}
+\include{Chapters/the_model}
+\include{Chapters/related_work}
+\include{Chapters/evaluation}
+\include{Chapters/conclusion}
+
+% If you have appendices:
+\appendixpage*          % if wanted
+\appendix
+\include{Appendix/default_appx}
+
+\backmatter
+% The bibliography comes after the appendices.
+% You can replace the standard "abbrv" bibliography style by another one.
+\bibliographystyle{abbrv}
+\bibliography{references}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

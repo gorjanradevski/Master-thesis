@@ -1,0 +1,176 @@
+\chapter{Evaluation and related work}
+\label{Evaluation}
+\section{Datasets}
+Throughout this thesis, the experiments performed are on the Pascal1k \cite{rashtchian2010collecting}, Flickr8k \cite{hodosh2013framing} and Flickr30k \cite{young2014image} datasets. All of the datasets, contain images collected from \textit{Flicrk}, where each image is accompanied by 5 sentences describing the image. The Pascal sentences dataset contains 1000 images where no particular splits are provided. Because the 1000 dataset images are spreaded throughout 20 different categories, in order for the experiments to be fair, 40 images together with their sentences are extracted from each category for training. The remaining 10 images together with the describing sentences are split as 5 for validation and 5 for testing. In total, the images used for training are 800, the images used for validation 100 and the images used for testing 100. The Flickr8k dataset provides concrete splits for training, validation and testing. In total there are 6091 images for training, 1000 images for validation and 1000 images for testing. Lastly, the Flickr30k dataset also provides training, validation and testing splits where 29783, 1000 and 1000 are used for each of the 3 categories accordingly. These are the splits provided by \cite{young2014image}.
+\section{Cross-modal retrieval and related work}
+\subsection{Evaluation metric}
+In order to evaluate a cross-modal retrieval model what is used throughout the literature is the metric \textit{Recall@K}, where \textit{K}, is usually taken to be \textit{1, 5} or \textit{10}. That is, given a dataset of images and their corresponding sentences,  the purpose is to retrieve a ranked list of the sentences for each image (\textit{image-text} retrieval) or to retrieve a ranked list of images for each sentence (\textit{text-image} retrieval). Then, the sentence retrieval \textit{Recall@K} would be the number of times the correct sentence is going to be within the top \textit{K} entries of the ranked list when the ranked list is retrieved for each image. On the other hand, the image retrieval \textit{Recall@K} would be the number of times when the correct image is going to be within the top \textit{K} entries of the ranked list when the ranked list is retrieved for each sentence.
+\subsection{Related work}
+In this section I will do a walk-through the different cross-modal retrieval methods that have performed their experiments on the same datasets that I use for the empirical analysis in this thesis. Moreover, all the of the methods adopt the \textit{Recall@K} metric to evaluate their methods which is the motivation for me using the same method in order to have a fair comparison.\endgraf
+\textbf{Deep fragment embeddings} \cite{karpathy2014deep} is a method that makes the explicit assumption that images are complex structures that have multiple entities within them. On the other hand, the sentences are soft descriptions about the contents of the image. Therefore, in order to reason about their similarity, in \textbf{DFE} \cite{karpathy2014deep}, they are breaking both the image and the sentence into several fragments. Namely, to break the image into image fragments they are extracting the top 19 detected regions using an R-CNN \cite{girshick2014rich}. On the other hand, the sentence is broken down into sentence fragments by considering the edges of a dependency tree. Then, every sentence fragment constitutes of a dependency triplet $(R, w_1, w_2)$, where the dependency triplet is mapped into the embedding space by a two-layer neural network. Their objective function incorporates both a fragment alignment objective as well as a global objective, where the global objective function matches the mismatching part of the objective function used in this thesis.\endgraf
+\textbf{Semantic dependency tree recurrent neural network} \cite{socher2014grounded} leverages a dependency tree parser in order to extract a hidden representation from the sentence. Moreover, in \textbf{SDT-RNN} the hidden representation from the image is extracted from a convolutionla neural network pretrained on \textit{ImageNet} \cite{krizhevsky2012imagenet}. Lastly, the objective function matches the global objective function from \cite{karpathy2014deep} as well as the mismatching part of the objective function used in this thesis.\endgraf
+\textbf{Deep visual semantic embedding} \cite{frome2013devise} to the best of my knowledge, is one of the first methods to leverage transfer learning on both the image encoder and text encoder branches. In \textbf{DeViSE}, each of the words of the sentence are encoded as one-hot vectors which are later embedded using the \textit{Skip-gram} \cite{mikolov2013distributed} model. Then, the sentence representation is obtained by taking the mean vector from all of the word vectors. On the other hand, a hidden representation of the image is obtained using a convolutional neural network pretrained on \textit{ImageNet} \cite{krizhevsky2012imagenet}. Because both of the image embedding and the sentence embedding are in their corresponding latent spaces, each of the modality embeddings are projected into a joint latent space by a one-layer neural network which is followd by the objective function to be minimized. The mismatching part of the objective function used within this thesis matches the one used in \cite{frome2013devise}.\endgraf
+\textbf{Associating Neural Word Embeddings with Deep Image Representations
+using Fisher Vectors} \cite{klein2015associating} is a method that achieves \textit{SOTA} results on the Pascal1k on most of the metrics. \textbf{FV} is a method that encodes the sentence as a set of word2vec \cite{mikolov2013distributed} vectors. The image embedding on the other hand, is taken from a convolutional neural network pretrained on \textit{ImageNet}. The novelty in \cite{klein2015associating} is that the sets are converted to a Fisher vector using Gaussian Mixture Model, a Laplacian Mixture Model or Hybrid Gaussian-Laplacian Mixture Model. Finally, the scoring function computed using the cannonical correlation analysis.\endgraf
+\textbf{Multimodal recurrent neural networks}\cite{mao2014explain} is a recurrent neural network based language model that given an image encoding and a sentence, it outputs a probability of the occurrence for each of the words in the sentence. The \textbf{m-RNN} during training is conditioned on the image embedding from a VGG16/19 \cite{simonyan2014very}, and it is trained to minimize the cross-entropy of the next ground truth word in a sequence. During inference, in case the task at hand is sentence retrieval given an image, the \textbf{m-RNN}, will output a probability distribution for each of the sentences in the dataset conditioned on the image embedding. On the other hand, if the task being solved is image retrieval given a sentence, the \textbf{m-RNN} will provide a probability distribution on the query sentence, conditioned on all of the images in the dataset. Therefore, in both cases the output can be seen considered as a ranked list.\endgraf
+\textbf{Deep visual-semantic alignments} model \cite{karpathy2015deep}, builds on top of \textbf{DFE} \cite{karpathy2014deep}. It alleviates the bottleneck of extracting the word embeddings using dependency tree parsers, where the context window is fixed, and they use a bidirectional recurrent neural network instead. Moreover, improvements are done on the image embedding branch of the model as well. Namely, in \cite{karpathy2014deep} the top 19 image regions are extracted with an R-CNN \cite{girshick2014rich} which is also the case in \cite{karpathy2015deep}. However, in \cite{karpathy2014deep} for each of these 19 proposed image regions an image embedding is obtained using \cite{krizhevsky2012imagenet} whereas in \textbf{DVSA} \cite{karpathy2015deep} the image region embeddings are obtained using the much deeper VGG network \cite{simonyan2014very}. Afterwards, following \textbf{DFE}, both a fragment and a global alignment are computes as an objective function.\endgraf
+\textbf{Multimodal neural language model} introduced by \cite{kiros2014unifying}, is one of the methods that indicates that a simple model may actually perform really well on the cross-modal retrieval task. The \textbf{MNLM} extracts image embedding from \cite{krizhevsky2012imagenet} together with the sentence embedding which are obtained from the last-hidden state of an \textit{LSTM}\cite{hochreiter1997long}. Once both modalities are encoded by a separate branch, the encodings are projected into a joint latent space. The objective function optimized matches the global alignment objective from \cite{karpathy2014deep, karpathy2015deep} as well as the matching loss of this thesis.\endgraf
+\textbf{Multimodal Convolutional Neural Network} \cite{ma2015multimodal} is a multi-modal matching model that leverages convolutional neural networks only for both encoding the modalities and matching them. Namely, a convolutional neural network \cite{simonyan2014very} pretrained on \textit{ImageNet} \cite{deng2009imagenet} is used to encode the image. Then, another \textit{matching} convolutional neural network, takes the word/sentence representation together with the image representation and produces a joint representation. Lastly, a feed-forward neural network is used to translate the joint representation into a matching score between the image and the sentence. The whole architecture is jointly trained by backpropagation \cite{rumelhart1985learning} to optimize the contrastive loss objective function.\endgraf
+
+\textbf{Visual semantic embeddings++} is an improvement of \cite{kiros2014unifying}. The \textbf{VSE++} takes inspiration from \cite{schroff2015facenet}, and leverages training the model on the hard negatives instead of on the semi-hard and hard negatives. Compared to \cite{kiros2014unifying}, in \textbf{VSE++} they leverage the use of a better image encoder such as \textit{Resnet152} \cite{he2016deep}, instead of \textit{VGG} \cite{simonyan2014very}. The novelty of \cite{faghri2017vse++} is that for each anchor image and a positive sentence in the batch, the hardest negative contrastive sentence selected and vice versa. This is motivated by the fact that the hardest negatives determine the success for the \textit{Recall@1} metric. Consequently, by training only on the hardest negatives, \cite{faghri2017vse++} obtain significant improvement especially on the \textit{Recall@1} metric.\endgraf
+\textbf{Selective multimodal LSTM} \cite{huang2017instance} is a model architecture that leverages attention \cite{bahdanau2014neural} in order to find the best alignment between the image embedding and the sentence embedding. \textbf{sm-LSTM}, follows a three step process. In the first step, the instance candidates are obtained using a bidirectional recurrent neural network for the sentence and by evenly dividing the image into regions and passing them through a \textit{CNN}. In the second step, attention is applied on top of the segments from the sentence and the image in order to extract the best possible alignment between them. Once the alignments are found, in the third step the \textbf{sm-LSTM} weights the alignments to describe the image and the sentence and computes the global similarity through a feed-forward neural network. The whole architecture is trained end to end by minimizing the contrastive loss.\endgraf
+\textbf{Embedding network} \cite{wang2018learning}, or shortly \textbf{EmbeddingNet} leverages a bidirectional recurrent neural network to encode the sentence into a fixed size vector, and a \textit{VGG} \cite{simonyan2014very}, to obtain a hidden representation of the image. Afterwards, two branches that share the same structure but have separate weights project both of the encoded modalities in a joint hidden space followed by a L2 normalization. Each of the branches has an architecture that consists of a fully connected layer followed by a ReLu \cite{nair2010rectified} non linearity, which is in turn followed by a projection layer in the joint embedding space. The objective function minimized by backpropagation aligns with the matching loss used within the scope of this thesis.\endgraf
+\textbf{Dual attention networks} \cite{nam2017dual} is a two branch network that leverages attention \cite{bahdanau2014neural} on both the image and the sentence branch. Therefore, the \textbf{DAN} architecture is closely related to the work done within the scope of this thesis. However, the attention mechanism used in \textbf{DAN} and within this thesis are fundamentally different. Namely, in \textbf{DAN}, two vectors of attended values, one for the image and one for the text are updated \textit{K} times. After each update, a dot product similarity is computed between the values. Lastly, \textbf{DAN} sums all the similarities in order to compute the final similarity between the image and the text. The minimized loss function corresponds to \cite{karpathy2014deep, karpathy2015deep, kiros2014unifying} as well as the matching loss used within the scope of this thesis.
+\section{Quantitative evaluation}
+\subsection{Pascal1k}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{@{}lccccccc@{}} \toprule
+    \multicolumn{1}{c}{} &
+    \multicolumn{3}{c}{Sentence retrieval} &
+    \multicolumn{3}{c}{Image retrieval} \\
+    \cmidrule(r){2-7}
+    Method  & R@1 &  R@5 & R@10 & R@1 & R@5 & R@10 \\ \midrule
+    SDT-RNN\cite{socher2014grounded}   &    25.0     &      56.0    &      70.0    &   25.4      &    65.2     &     84.4     \\
+    DFE\cite{karpathy2014deep}  &    39.0     &      68.0    &      79.0    &   23.6      &    65.2     &     79.8     \\
+    FV\cite{klein2015associating}   &    \textbf{55.9}     &      \textbf{86.2}    &      93.3    &   \textbf{44.0}      &    \textbf{85.6}     &     94.6     \\
+    Devise\cite{frome2013devise}  &    17.0     &      57.0    &      68.0    &   21.6      &    54.6     &     72.4     \\ \midrule
+    SMHA  &    44.0     &      80.0    &      \textbf{95.0}    &   40.0      &    80.0     &     \textbf{96.0}     \\ \bottomrule
+  \end{tabular}
+  \caption{Results on the Pascal sentences dataset.}
+  \label{pascal1kresults}
+\end{table}
+On the Pascal1k datasets, we can see that \textbf{FV} outperforms the other methods on the \textit{Recall@1} and \textit{Recall@5}. However, on the \textit{Recall@10} metric the \textbf{SMHA} reports better results than \textbf{FV}.\endgraf
+The fact that the \textbf{FV} method outperforms all the rest is related to Occam's razor principle in machine learning. The Pascal1k dataset is rather small and methods that rely on deep learning can easily overfit the training data. On the other hand, the \textbf{DFE}\cite{karpathy2014deep} \textbf{SDT-RNN}\cite{socher2014grounded} and \textbf{Devise}\cite{frome2013devise} due to their simple structure, can't properly fit the data and report results much lower than \textbf{SMHA} on all metrics.
+\subsection{Flickr8k}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{@{}lccccccc@{}} \toprule
+    \multicolumn{1}{c}{} &
+    \multicolumn{3}{c}{Sentence retrieval} &
+    \multicolumn{3}{c}{Image retrieval} \\
+    \cmidrule(r){2-7}
+    Method  & R@1 &  R@5 & R@10 & R@1 & R@5 & R@10 \\ \midrule
+    SDT-RNN \cite{socher2014grounded}   &    6.0     &      22.7    &      34.0    &   6.6      &    21.6     &     31.7     \\
+    Devise \cite{frome2013devise}  &    4.8     &      16.5    &      27.3    &   5.9      &    20.1     &     29.6     \\
+    FV \cite{klein2015associating}   &    31.0     &      59.3   &      73.6    &   21.2      &    \textbf{50.0}     &     64.8     \\
+    DFE \cite{karpathy2014deep}  &    12.6     &      32.9   &      44.0    &   9.7      &    29.6     &     42.5     \\ 
+    m-RNN \cite{mao2014explain}  &    14.5     &      37.2    &      48.5    &   11.5      &    31.0     &     42.4     \\ 
+    DVSA\cite{karpathy2015deep}  &    16.5     &      40.6    &      54.2    &   11.8      &    31.8     &     44.7     \\ 
+    MNLM\cite{kiros2014unifying}  &    18.0     &      40.9    &      55.0    &   12.5      &    37.0     &     51.5     \\ 
+    m-CNN\cite{ma2015multimodal}  &    15.6     &      40.0    &      55.7    &   14.5      &    38.2     &     52.6     \\ \midrule
+    SMHA  &    \textbf{33.0}     &      \textbf{61.0}    &      \textbf{75.0}    &   \textbf{22.0}      &    \textbf{50.0}     &     \textbf{66.0}     \\ \bottomrule
+  \end{tabular}
+  \caption{Results on the Flickr8k dataset.}
+  \label{flickr8kkresults}
+\end{table}
+Because of the increased size of the Flickr8k dataset compared to the Pascal1k dataset, methods that reply mon deep learning\cite{ma2015multimodal, kiros2014unifying, karpathy2015deep, mao2014explain, klein2015associating}, are starting to significantly outperform the simple methods \cite{socher2014grounded, frome2013devise, karpathy2014deep}. Also, due to the increased size of the dataset \textbf{SMHA} is taking over the first place from \textbf{FV}. However, this dataset can still be considered as small compared to the capacity of data the deep learning models can consume.  
+\subsection{Flickr30k}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{@{}lccccccc@{}} \toprule
+    \multicolumn{1}{c}{} &
+    \multicolumn{3}{c}{Sentence retrieval} &
+    \multicolumn{3}{c}{Image retrieval} \\
+    \cmidrule(r){2-7}
+    Method  & R@1 &  R@5 & R@10 & R@1 & R@5 & R@10 \\ \midrule
+    MNLM\cite{kiros2014unifying}   &    0     &      0    &      0    &   0      &    0     &     0     \\
+    DAN\cite{nam2017dual}  &    0     &      0    &      0    &   0      &    0     &     0     \\
+    VSE++\cite{faghri2017vse++}   &    0     &      0    &      0    &   0      &    0     &     0     \\
+    sm-LSTM\cite{huang2017instance}  &    0     &      0    &      0    &   0      &    0     &     0     \\ 
+    m-CNN\cite{ma2015multimodal} &    0     &      0    &      0    &   0      &    0     &     0  \\    
+    Fisher\cite{klein2015associating} &    0     &      0    &      0    &   0      &    0     &     0     \\ 
+    SCAN\cite{lee2018stacked} &    0     &      0    &      0    &   0      &    0     &     0     \\ \midrule
+    SMHA &    0     &      0    &      0    &   0      &    0     &     0     \\ \bottomrule
+  \end{tabular}
+  \caption{Results on the Flickr30k dataset.}
+  \label{flickr30kkresults}
+\end{table}
+\lipsum[66]
+\section{Qualitative evaluation}
+By visualizing the attention maps from each hop we are able to see the image and sentence elements that played a significant role when the modalities were embedded in the latent space. Moreover, this also adds an interpretability feature to the model which showcases that the model looks at areas in the image that correspond to what a person will do if he/she needs to describe how the images look like. Figure \ref{fig:image_attn_1}, illustrates the image attention across 11 distinct attention hops.\endgraf
+As we can see on figure \ref{fig:image_attn_1}, the raw image consists of two dogs that are playing with a frisbee. Because of the nature of the image, in case a person tries to explain the image, he/she will focus on the three most important entities on the image, namely the brown dog, the black dog and the frisbee. The last thing that a person will pay attention to is the background. Consequently, we can observe that the first three attention hops (the second, third and forth image on figure \ref{fig:image_attn_1}), attend on the general outline of the image, or in other word, the attention weights are spread on all 3 entities. The forth, the fifth, the sixth and the seventh attention hop (all 4 images on the second row of figure \ref{fig:image_attn_1}) attend mainly on the black dog and the frisbee and the last four attention hops (all 4 images on the third row of figure \ref{fig:image_attn_1}) attend on the brown dog.
+\begin{figure}
+  \centering
+  \includegraphics[width=130mm]{Images/image_attn_80_index.png}
+  \caption[Image multi hop attention 1]{Visualizing the image attention across 11 distinct attention hops. The original image is the first one on the left while the 11 attention hops are the images with the heat map overlay.}
+  \label{fig:image_attn_1}
+\end{figure}
+Figure \ref{fig:image_attn_2} on the other hand, showcases a scenario where the main entity of the image holds most of the meaning. Because of that, if we draw the same analogy as before, we can conclude that almost all of the focus will be drawn by the basketball player.\endgraf
+\begin{figure}
+  \centering
+  \includegraphics[width=130mm]{Images/image_attn_190_index.png}
+  \caption[Image multi hop attention 2]{Visualizing the image attention across 11 distinct attention hops. The original image is the first one on the left while the 11 attention hops are the images with the heat map overlay.}
+  \label{fig:image_attn_2}
+\end{figure}
+Figure \ref{fig:image-text} indicates the image-text retrieval case with a visualization of the attention weights from a single attention hop. As we can see, in this case, the image attention is mostly spread around all aspects of the image. On the other hand, the sentence attention behaves in a similar way. On the highest ranked retrieved sentence \textit{"a boy is on the beach with a paddle in his hand as he walks through the ocean water"} most of the attention is placed on \textit{"a boy"}, \textit{beach}, \textit{paddle}, \textit{ocean water} which are also the entities of that hold the meaning of the image. The rest of the words in the same sentence are either prepositions or verbs.\endgraf
+\begin{figure}
+  \centering
+  \includegraphics[width=130mm]{Images/image-text-1.png}
+  \caption[Image-text retrieval]{Visualizing the image-text retrieval case. The image on the left is the query image while the image on the right are the attention weights from a single attention hop. The 5 sentences below the image are the retrieved sentences with the red background of the words indicates increased attention weights on those words.}
+  \label{fig:image-text}
+\end{figure}
+Figure \ref{fig:text-image} showcases the \textit{text-image} retrieval on a randomly chosen query sentence on the Flickr8k dataset. As we can see, increased attention weights are placed on the words \textit{a, biker, hill}. Two of the words are explanatory nouns which are the two main entities of the image. On the retrieved images we can see that all of them contain snowy hills and a person. On the other hand, the image attention is mainly focused on the person and much less on the surroundings. The increased emphasis on the person in both the query sentence and the image support the fact that the model is learning an implicit alignment between the key components of both modalities.
+\begin{figure}
+  \centering
+  \includegraphics[width=130mm]{Images/text-image-1.png}
+  \caption[Image-text retrieval]{Visualizing the text-image retrieval case. The sentence is the query sentence where the words with red background indicate increased attention weights on those words. The 5 images on the first row are the 5 retrieved images. The 5 images on the bottom row are the attention weights from a single attention hop on the retrieved images.}
+  \label{fig:text-image}
+\end{figure}
+\section{Effect of using multiple attention hops}
+Compared to the standard additive attention firstly used by \cite{bahdanau2014neural}, the attention mechanism used within this thesis extends the standard one by using multiple attention hops instead of just a single one. This is supported by the fact that when humans are trying retrieve a sentence from a dataset of sentences that corresponds to an image and vice versa, they have to look multiple times or pay attention to different aspects of both the image and the sentence. \endgraf
+Figure \ref{fig:attn_hops}, showcases two models that are trained for 10 epochs on the Flickr8k dataset and the \textit{Recall@5} on the test set is reported for each epoch. As we can see, due to the less complex structure, the model that uses 1 attention hops outperforms the model that uses multiple attention hops in the first few epochs. However, after epoch 4 the model that uses multiple attention hops permanently outperforms the simpler model and it is reaching higher \textit{Recall@5} at its peak.  
+\begin{figure}
+  \centering
+  \includegraphics[width=100mm]{Images/multiple_attn_hops.png}
+  \caption[1 attention hop versus multiple attention hops]{Comparison of the same model when using 1 attention hops versus using multiple attention hops. Both models are trained on the Flickr8k dataset.}
+  \label{fig:attn_hops}
+\end{figure}
+
+\section{Effect of attention weights diversification}
+The problem that arises when using multiple attention hops is redundancy. The whole purpose of having multiple attention hops can be considered as useless in case all of the attention hops output weights that are highly correlated. This can also be considered as a local minima that appears in the surface of the loss function, where the model is not utilizing its potential. In order to overcome this issue, I employ a term that is supposed to keep the attention hops diverse and therefore push the model towards utilizing its learning ability.\endgraf
+On figure \ref{fig:attn_diverse} two models that employ attention with multiple hops are trained on the Flickr8k dataset for 10 epochs and their \textit{Recall@5} on the test set is reported. The difference between the models is that one of the models minimizes the attention weights diversification term together with the matching loss and the other only minimizes the matching loss. As we can see on the figure, for the first few epochs the model that does not minimize penalization term outperforms the one that does. However, that model really fast reaches its plateaus and afterwards its performance stagnates. On the other hand, the model that ensures that the attention hops maintain diversity continuously improves and outperformes the earlier model.
+\begin{figure}
+  \centering
+  \includegraphics[width=100mm]{Images/attention_weights_diversification.png}
+  \caption[Attention diversification term]{Comparison of the same model when a term is included in the loss function to keep the attention weights diverse versus without the penalization term. Both models are trained on the Flickr8k dataset}
+  \label{fig:attn_diverse}
+\end{figure}
+Moreover, figure \ref{fig:2_hop_frob} illustrates the outputs of two image attention hops when the model is trained together with the attention hops diversification term. As we can see on figure \ref{fig:2_hop_frob} each of the two distinct attention hops either specializes on a certain feature of the image, or extends the attended part of the previous attention hop. For example, in the particular case, the first attention hop (The second image from the left), attends mostly on the red ribbon and the man that is on the left. In addition, the second attention hop (The third image from the left), extends the attended part from the first attention hop, and places its attention on the background. 
+\begin{figure}
+  \centering
+  \includegraphics[width=140mm]{Images/2_hop_frob.png}
+  \caption{Image attention when the model is trained together with minimizing a term to ensure diversity between the attention hops}
+  \label{fig:2_hop_frob}
+\end{figure}
+However, if we have a look at the case on figure \ref{fig:2_hop_no_frob}, where the model has been trained without the attention hops diversification term, we can see quite the opposite of figure \ref{fig:2_hop_frob}. Here, both of the attention hops place their attention on the same thing. Both the first and the second attention hops have placed an equivalent attention on the ribbon. Moreover, equivalent attention is placed on the background and the attention placed on the two people changes slightly between the two attention hops. 
+\begin{figure}
+  \centering
+  \includegraphics[width=140mm]{Images/2_hop_no_frob.png}
+  \caption{Image attention when the model is trained \textbf{without} minimizing a term to ensure diversity between the attention hops}
+  \label{fig:2_hop_no_frob}
+\end{figure}
+
+\begin{comment}
+\section{Effect of training on the hard negatives}
+In VSE++ \cite{faghri2017vse++} the method of training on the hard negatives in the cross modal retrieval case is introduced. Moreover, \textit{SCAN} \cite{lee2018stacked} which currently holds the \textit{SOTA} result on Flickr30k reports an improvement of 48.2\% by training on the hardest negatives within a batch. However, I have experienced extremely unstable training when the models where trained only on the hardest negatives within the batch. Therefore, in order to get the benefit of letting the model to focus on the relevant examples within a batch and keep the training stable, the models in this thesis are trained on the \textit{N\%} hardest negatives within a batch where \textit{N} is empirically chosen as the value that reports the best results on the validation set on each of the datasets. On figure \ref{fig:hard_negatives} we can see that when a model is trained on the hardest \textit{1\%} within a batch for 10 epochs, it reports relatively low number of the the \textit{Recall@5} metric. This is due to the fact that early in the training, the model weights are random and the choice of the hardest negatives within the batch is at random. Therefore, that can drastically affect the direction of the of the gradient early in the training. This is pretty much the case when the model is trained on the hardest \textit{5\%} instances within a batch. On the other hand, we can see that the performance of the training reaches its peak when the model is trained on the hardest \textit{10\%} instances within a batch where we get improvement of KOLKU POSTO IMPROVEMENT on the \textit{Recall@1} metric compared to the other models trained on all of the instances within a batch and on the  \textit{50\%} hardest instances within a batch.
+\begin{figure}
+  \centering
+  \includegraphics[width=80mm]{Images/placeholder.jpeg}
+  \caption{The \textit{Recall@5} for models that were trained on the \textit{N\%} hardest negatives within a batch}
+  \label{fig:hard_negatives_n}
+\end{figure}
+\end{comment}
+
+\section{Effect of using siamese attention}
+The \textit{Siamese neural network} \cite{bromley1994signature} consist of two or more copies of a single neural network that have tied weights. In the attention block of the model used to perform the retrieval, I have empirically found that tying the weights of the attention module, even though the inputs come from a completely different source of information does not hurt the performance of the model. On figure \ref{fig:siamese_vs_non_siamese} two models, one using \textit{siamese attention} and one using separate weights for the attention blocks are trained for 10 epochs on the \textit{Flickr8k} dataset and the \textit{Recall@5} is reported on the test set. From the figure, we can see that the model that ties the attention weights for both of the attention blocks performs at least as good as the one that uses separate weights. This suggests that the attention block  "learns to pay attention" and can be easily reused across modalities.
+\begin{figure}
+  \centering
+  \includegraphics[width=100mm]{Images/siamese_attention_vs_non_siamese.png}
+  \caption[Siamese vs non siamese attention]{\textit{Recall@5} of a model trained with siamese attention and a model trained with using separate attention weights for the visual and textual attention}
+  \label{fig:siamese_vs_non_siamese}
+\end{figure}
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "thesis"
+%%% End: 
