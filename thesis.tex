@@ -54,7 +54,7 @@ especially my promoter and my assistants. I would also like to thank the
 \tableofcontents*
 
 \begin{abstract}
-In this thesis, the problem of cross-modal retrieval in the image-text case is studied. I leverage the fact that most of the time, multiple entities are present in the modalities, so a model that is able to focus at different aspects of each individual modality should overpower simpler models that "look only once". Moreover, most of the approaches that tackle the cross-modal retrieval problem are used as a black box, and it is indistinguishable how a corresponding image was matched with the sentence query and vice versa. Lastly, the cross-modal retrieval datasets are small and the training data is scarce. Due to that, in this thesis a heavy emphasis is placed on transferring the knowledge from models that were trained on millions of data samples on different tasks. In this thesis, I present \textit{Siamese multi-hop attention} which overcomes the aforementioned obstacles when doing cross-modal retrieval in the image-text case. \textit{SMHA} is tested on a variety of datasets that include both small ones Pascal1k, Flickr8k as well as medium to large ones Flickr30k and achieves state-of-the-art results on most of them.
+In this thesis, the problem of cross-modal retrieval in the image-text and text-image case are studied. I leverage the fact that most of the time, multiple entities are present in the modalities, so a model that is able to focus at different aspects of each individual modality should overpower simpler models that "look only once". Moreover, most of the approaches that tackle the cross-modal retrieval problem are used as a black box, and it is indistinguishable how a corresponding image was matched with the sentence query and vice versa. Lastly, the cross-modal retrieval datasets are small and the training data is scarce. Due to that, in this thesis a heavy emphasis is placed on transferring the knowledge from models that were trained on millions of data samples on different tasks. In this thesis, I present \textit{Siamese multi-hop attention} which overcomes the aforementioned obstacles when doing cross-modal retrieval in the image-text case. \textit{SMHA} is tested on a variety of datasets that include both small ones Pascal1k, Flickr8k as well as medium to large ones Flickr30k and achieves state-of-the-art results on most of them. The code developed in this thesis has been made available at: \href{https://github.com/gorjanradevski/SMHA}{https://github.com/gorjanradevski/SMHA} 
 \end{abstract}
 
 % A list of figures and tables is optional
@@ -70,7 +70,14 @@ In this thesis, the problem of cross-modal retrieval in the image-text case is s
   \renewcommand{\arraystretch}{1.1}
   \begin{tabularx}{\textwidth}{@{}p{12mm}X@{}}
     \textit{SMHA}   & Siamese multi-hop attention \\
-    \textit{SOTA}   & State of the art
+    \textit{SOTA}   & State of the art \\
+    \textit{LSTM}   & Long-short term memory \\
+    \textit{GRU}    & Gated recurrent unit \\
+    \textit{ResNet} & Residual network \\
+    \textit{ReLU} & Rectified-linear unit \\
+    \textit{ELMo} & Embeddings from language Model \\
+    \textit{tanh} & Hyperbolic function \\
+    \textit{}
   \end{tabularx}
 \end{flushleft}
 %\section*{Symbols}
@@ -85,15 +92,16 @@ In this thesis, the problem of cross-modal retrieval in the image-text case is s
 \mainmatter
 
 \include{Chapters/intro}
-\include{Chapters/the_model}
 \include{Chapters/related_work}
-\include{Chapters/evaluation}
+\include{Chapters/the_model}
+\include{Chapters/experiments}
 \include{Chapters/conclusion}
 
 % If you have appendices:
 \appendixpage*          % if wanted
 \appendix
-\include{Appendix/default_appx}
+\include{Appendix/training}
+\include{Appendix/additional_examples}
 
 \backmatter
 % The bibliography comes after the appendices.
