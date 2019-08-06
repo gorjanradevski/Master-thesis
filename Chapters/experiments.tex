@@ -1,10 +1,11 @@
 \chapter{Experiments}
 \label{experiments}
+
 \section{Datasets}
-Throughout this thesis, I perform experiments on the \textit{Pascal1k} \cite{rashtchian2010collecting}, \textit{Flickr8k} \cite{hodosh2013framing}, and \textit{Flickr30k} \cite{young2014image} datasets. All of them contain images collected from \textit{Flickr}, where each image is accompanied by 5 sentences describing the image. The \textit{Pascal1k} dataset contains 1000 images where no particular splits are provided. Because the 1000 images are spread throughout 20 different categories, I extract 40 images together with their sentences from each category for training. The remaining 10 images per category together with the corresponding sentences are split as 5 images per category for validation and 5 images per category for testing as \cite{klein2015associating, socher2014grounded, frome2013devise, karpathy2014deep}. In total, 800 images are used for training, 100 for validation, and 100 as a test set. The \textit{Flickr8k} dataset provides concrete splits for training, validation, and testing. In total, there are 6091 images for training, 1000 images for validation, and 1000 images for testing. Lastly, the \textit{Flickr30k} dataset also provides training, validation, and testing splits \cite{young2014image} where 29783, 1000, and 1000 are used for training, validation, and testing accordingly.
+Throughout this thesis, I perform experiments on the \textit{Pascal1k} \cite{rashtchian2010collecting}, \textit{Flickr8k} \cite{hodosh2013framing}, and \textit{Flickr30k} \cite{young2014image} datasets. All of them contain images collected from \textit{Flickr}, where each image is accompanied by 5 sentences describing the image. The \textit{Pascal1k} dataset contains 1000 images where no particular splits are provided. Because the 1000 images are spread throughout 20 different categories, I extract 40 images together with their sentences from each category for training. The remaining 10 images per category together with the corresponding sentences are split as 5 images per category for validation and 5 images per category for testing \cite{klein2015associating, socher2014grounded, frome2013devise, karpathy2014deep}. In total, 800 images are used for training, 100 for validation, and 100 as a test set. The \textit{Flickr8k} dataset provides concrete splits for training, validation, and testing. In total, there are 6091 images for training, 1000 images for validation, and 1000 images for testing. Lastly, the \textit{Flickr30k} dataset also provides training, validation, and testing splits \cite{young2014image} where 29783, 1000, and 1000 are used for training, validation, and testing accordingly.
 
 \section{Experimental setup}
-To evaluate the \textit{Siamese multi-hop attention} model, I conduct extensive experiments and report the \textit{Recall@K} metric, where \textit{K}, is taken to be \textit{1, 5}, or \textit{10}. That is, given a dataset of images and their corresponding sentences,  the purpose is to retrieve a ranked list of sentences for each image (\textit{image-text} retrieval) or to retrieve a ranked list of images for each sentence (\textit{text-image} retrieval). Then, the sentence retrieval \textit{Recall@K} would be the number of times the correct sentence is within the top \textit{K} entries of the ranked list when the ranked list is computed for each image. On the other hand, the image retrieval \textit{Recall@K} would be the number of times the correct image is within the top \textit{K} entries of the ranked list when the ranked list is computed for each sentence. All hyperparameters of \textit{SMHA} are selected as the values that yield the best \textit{Recall@K} on the validation set, and the trained model is used for inference on the test set. A detailed overview of the values chosen for the final models is presented in the appendix section \ref{app: training}.
+To evaluate the \textit{Siamese multi-hop attention} model, I conduct extensive experiments and report the \textit{Recall@K} metric, where \textit{K}, is taken to be \textit{1, 5}, or \textit{10}. That is, given a dataset of images and their corresponding sentences,  the purpose is to retrieve a ranked list of sentences for each image (\textit{image-text} retrieval) or to retrieve a ranked list of images for each sentence (\textit{text-image} retrieval). Then, the sentence retrieval \textit{Recall@K} would be the number of times the correct sentence is within the top \textit{K} entries of the ranked list when the ranked list is computed for each image. On the other hand, the image retrieval \textit{Recall@K} would be the number of times the correct image is within the top \textit{K} entries of the ranked list when the ranked list is computed for each sentence. All hyperparameters of \textit{SMHA} are selected as the values that yield the best \textit{Recall@1} on the validation set, and the trained model is used for inference on the test set. A detailed overview of the values chosen for the final models is presented in the appendix section \ref{app: training}. Finally, in order to overcome the overfitting pitfall when training deep neural networks, during training, the model weights are saved only when the \textit{Recall@1} on the validation set improved compared to the previous epochs. 
 
 \section{Quantitative evaluation}
 \subsection{Pascal1k}
@@ -16,17 +17,17 @@ To evaluate the \textit{Siamese multi-hop attention} model, I conduct extensive 
     \multicolumn{3}{c}{Image retrieval} \\
     \cmidrule(r){2-7}
     Method  & R@1 &  R@5 & R@10 & R@1 & R@5 & R@10 \\ \midrule
-    SDT-RNN\cite{socher2014grounded}   &    25.0     &      56.0    &      70.0    &   25.4      &    65.2     &     84.4     \\
-    DFE\cite{karpathy2014deep}  &    39.0     &      68.0    &      79.0    &   23.6      &    65.2     &     79.8     \\
-    FV\cite{klein2015associating}   &    \textbf{55.9}     &      \textbf{86.2}    &      93.3    &   \textbf{44.0}      &    \textbf{85.6}     &     94.6     \\
-    Devise\cite{frome2013devise}  &    17.0     &      57.0    &      68.0    &   21.6      &    54.6     &     72.4     \\ \midrule
+    SDT-RNN \cite{socher2014grounded}   &    25.0     &      56.0    &      70.0    &   25.4      &    65.2     &     84.4     \\
+    DFE \cite{karpathy2014deep}  &    39.0     &      68.0    &      79.0    &   23.6      &    65.2     &     79.8     \\
+    FV \cite{klein2015associating}   &    \textbf{55.9}     &      \textbf{86.2}    &      93.3    &   \textbf{44.0}      &    \textbf{85.6}     &     94.6     \\
+    Devise \cite{frome2013devise}  &    17.0     &      57.0    &      68.0    &   21.6      &    54.6     &     72.4     \\ \midrule
     SMHA  &    44.0     &      80.0    &      \textbf{95.0}    &   40.0      &    80.0     &     \textbf{96.0}     \\ \bottomrule
   \end{tabular}
   \caption{Results on the Pascal sentences dataset.}
   \label{pascal1kresults}
 \end{table}
-On the Pascal1k dataset, we can see that \textbf{FV} outperforms the other methods on the \textit{Recall@1} and \textit{Recall@5}. However, on the \textit{Recall@10} metric, the \textbf{SMHA} reports better results than \textbf{FV}.\endgraf
-The fact that the \textbf{FV} method outperforms all the rest is related to \textit{Occam's razor} principle in machine learning. The \textit{Pascal1k} dataset is rather small, and methods that rely on deep learning can easily overfit the training data. On the other hand, the \textbf{DFE}\cite{karpathy2014deep} \textbf{SDT-RNN}\cite{socher2014grounded} and \textbf{Devise}\cite{frome2013devise} due to their simple structure, can't properly fit the data and report results much lower than \textbf{SMHA} on all metrics.
+On the Pascal1k dataset, we can see that \citet{klein2015associating} outperform the other methods on the \textit{Recall@1} and \textit{Recall@5} metrics. However, on the \textit{Recall@10} metric, the \textbf{SMHA} reports better results than \textbf{FV}.\endgraf
+The fact that the \textbf{FV} method outperforms all the rest is related to \textit{Occam's razor} principle in machine learning. The \textit{Pascal1k} dataset is rather small, and methods that rely on deep learning can easily overfit the training data. On the other hand, \textbf{DFE} \cite{karpathy2014deep},  \textbf{SDT-RNN} \cite{socher2014grounded}, and \textbf{Devise} \cite{frome2013devise} due to their simple structure, can't properly fit the data and report results much lower than \textbf{SMHA} on all metrics.
 \subsection{Flickr8k}
 \begin{table}[H]
   \centering
@@ -41,15 +42,17 @@ The fact that the \textbf{FV} method outperforms all the rest is related to \tex
     FV \cite{klein2015associating}   &    31.0     &      59.3   &      73.6    &   21.2      &    \textbf{50.0}     &     64.8     \\
     DFE \cite{karpathy2014deep}  &    12.6     &      32.9   &      44.0    &   9.7      &    29.6     &     42.5     \\ 
     m-RNN \cite{mao2014explain}  &    14.5     &      37.2    &      48.5    &   11.5      &    31.0     &     42.4     \\ 
-    DVSA\cite{karpathy2015deep}  &    16.5     &      40.6    &      54.2    &   11.8      &    31.8     &     44.7     \\ 
-    MNLM\cite{kiros2014unifying}  &    18.0     &      40.9    &      55.0    &   12.5      &    37.0     &     51.5     \\ 
-    m-CNN\cite{ma2015multimodal}  &    15.6     &      40.0    &      55.7    &   14.5      &    38.2     &     52.6     \\ \midrule
+    DVSA \cite{karpathy2015deep}  &    16.5     &      40.6    &      54.2    &   11.8      &    31.8     &     44.7     \\ 
+    MNLM \cite{kiros2014unifying}  &    18.0     &      40.9    &      55.0    &   12.5      &    37.0     &     51.5     \\ 
+    m-CNN \cite{ma2015multimodal}  &    15.6     &      40.0    &      55.7    &   14.5      &    38.2     &     52.6     \\ \midrule
     SMHA  &    \textbf{33.0}     &      \textbf{61.0}    &      \textbf{75.0}    &   \textbf{22.0}      &    \textbf{50.0}     &     \textbf{66.0}     \\ \bottomrule
   \end{tabular}
   \caption{Results on the Flickr8k dataset.}
   \label{flickr8kkresults}
 \end{table}
-Because of the increased size of the \textit{Flickr8k} dataset compared to the \textit{Pascal1k} dataset, methods that rely on deep learning \cite{ma2015multimodal, kiros2014unifying, karpathy2015deep, mao2014explain, klein2015associating}, are starting to significantly outperforms simple methods \cite{socher2014grounded, frome2013devise, karpathy2014deep}. Also, due to the increased size of the dataset, \textbf{SMHA} is taking over the first place from \textbf{FV}. However, this dataset can still be considered as small compared to the capacity of data the deep learning models can consume.
+
+Because of the increased size of the \textit{Flickr8k} dataset compared to the \textit{Pascal1k} dataset, methods that rely on deep learning \cite{ma2015multimodal, kiros2014unifying, karpathy2015deep, mao2014explain, klein2015associating}, are starting to significantly outperforms simple methods \cite{socher2014grounded, frome2013devise, karpathy2014deep}. Also, due to the increased size of the dataset, \textbf{SMHA} is taking over the first place from \textbf{FV}. However, this dataset can still be considered as small compared to the capacity of data the deep learning models can consume and yet and again, a simple method may yield competitive results.
+
 \subsection{Flickr30k}
 \begin{table}[H]
   \centering
@@ -59,120 +62,125 @@ Because of the increased size of the \textit{Flickr8k} dataset compared to the \
     \multicolumn{3}{c}{Image retrieval} \\
     \cmidrule(r){2-7}
     Method  & R@1 &  R@5 & R@10 & R@1 & R@5 & R@10 \\ \midrule
-    MNLM\cite{kiros2014unifying}   &    23.0     &      50.7    &      62.9    &   16.8      &    42.0     &     56.5     \\
-    DAN\cite{nam2017dual}  &    55.0     &      81.8    &      89.0    &   39.4      &    69.2     &     79.1     \\
-    VSE++\cite{faghri2017vse++}   &    52.9     &      80.5    &      87.2    &   39.6      &    70.1     &     79.5     \\
-    sm-LSTM\cite{huang2017instance}  &    42.5     &      71.9    &      81.5    &   30.2      &    60.4     &     72.3     \\ 
-    m-CNN\cite{ma2015multimodal} &    33.6     &      64.1    &      74.9    &   26.2      &    56.3     &     69.6  \\    
-    Fisher\cite{klein2015associating} &    35.0     &      62.0    &      73.8    &   25.0      &    52.7     &     66.0     \\ 
-    SCAN\cite{lee2018stacked} &  \textbf{67.4} & \textbf{90.3} & \textbf{95.8} & \textbf{48.6} & \textbf{77.7} & \textbf{85.2}    \\ 
-    EmbeddingNet\cite{wang2018learning} &    40.7     &      69.7    &      79.2    &   29.2      &    59.6     &     79.7     \\ \midrule
+    MNLM \cite{kiros2014unifying}   &    23.0     &      50.7    &      62.9    &   16.8      &    42.0     &     56.5     \\
+    DAN \cite{nam2017dual}  &    55.0     &      81.8    &      89.0    &   39.4      &    69.2     &     79.1     \\
+    VSE++ \cite{faghri2017vse++}   &    52.9     &      80.5    &      87.2    &   39.6      &    70.1     &     79.5     \\
+    sm-LSTM \cite{huang2017instance}  &    42.5     &      71.9    &      81.5    &   30.2      &    60.4     &     72.3     \\ 
+    m-CNN \cite{ma2015multimodal} &    33.6     &      64.1    &      74.9    &   26.2      &    56.3     &     69.6  \\    
+    FV \cite{klein2015associating} &    35.0     &      62.0    &      73.8    &   25.0      &    52.7     &     66.0     \\ 
+    SCAN \cite{lee2018stacked} &  \textbf{67.4} & \textbf{90.3} & \textbf{95.8} & \textbf{48.6} & \textbf{77.7} & \textbf{85.2}    \\ 
+    EmbeddingNet \cite{wang2018learning} &    40.7     &      69.7    &      79.2    &   29.2      &    59.6     &     79.7     \\ \midrule
     SMHA &    37.3     &      68.3    &      78.6    &   26.7      &    56.2     &     68.7     \\ \bottomrule
   \end{tabular}
   \caption{Results on the Flickr30k dataset}
   \label{flickr30kkresults}
 \end{table}
-PRELIMINARY RESULTS WITH UNTUNED MODEL, THEREFORE NOT DISCUSSED YET
+\textcolor{red}{PRELIMINARY RESULTS WITH UNTUNED MODEL, THEREFORE NOT DISCUSSED YET}
 
 \section{Qualitative evaluation}
-By visualizing the attention maps from each attention hop, we are able to see the image and sentence elements that played a significant role when the modalities are embedded in the latent space. Furthermore, the ability to visualize the attention process adds an interpretability feature to the model which many of the other non-attention based approaches lack. Besides, this demonstrates that a single attention hop attends on naturally aligned areas in the image and words in the sentence.\endgraf
+By visualizing the attention weights from each attention hop, we can see the image and sentence elements that played a significant role when the modalities are embedded in the latent space. Furthermore, the ability to visualize the attention process adds an interpretability feature to the model which many of the other non-attention based approaches lack. Besides, this demonstrates that the multi-hop attention module learns to attend on areas in the image and words in the sentence which are naturally aligned.\endgraf
 
-Figure \ref{fig:image-text-1} depicts the image-text matching alongside a visualization of the attention weights from a two randomly picked attention hops. As we can see, the first visual attention hop is mostly focused on the woman who is in front of the image. The semantic attention behaves in a similar way. The highest-ranked retrieved sentence " \textit{an asian boy and an asian girl are smiling in a crowd of people}" mostly highlights the phrases \textit{"asian boy"}, \textit{asian girl}. The other words that have an increased weight are \textit{smiling}, \textit{crowd}, and \textit{people}. All of these words have a less significant role in the sentence meaning, and thus, their weight compared to the two main word entities is smaller. On the other hand, the second attention hop portrays a more general overview of the image and the sentence. The visual attention is spread throughout most of the image, and it is dominant in the background. The semantic attention behaves accordingly. The words that have the biggest weight are \textit{people} and \textit{crowd}, which is in accordance with the visual attention.\endgraf
+Figure \ref{fig:image-text-1} depicts the image-text retrieval alongside a visualization of the attention weights from a two randomly picked attention hops. As we can see on the first visual attention hop, the main focus is the woman who is in the foreground of the image. The semantic attention behaves in a similar way. The highest-ranked retrieved sentence \textit{an asian boy and an asian girl are smiling in a crowd of people} mostly highlights the phrases \textit{asian boy} and \textit{asian girl}. The other words that have an increased weight are \textit{smiling}, \textit{crowd}, and \textit{people}. All of these words have a less significant role in the sentence meaning, and thus, their weight compared to the two main word entities is smaller. On the other hand, the second attention hop portrays a more general overview of the image and the sentence. The visual attention is spread throughout most of the image, and it is dominant in the background. The semantic attention behaves accordingly. The words that have the biggest weight are \textit{people} and \textit{crowd}, which is in accordance with the visual attention.\endgraf
 
 
 \begin{figure}
   \centering
   \includegraphics[width=130mm]{Images/image-text.pdf}
-  \caption[Image-text retrieval]{Visualizing the image-text retrieval. The image on the left is the query image while the images on the right are the attention weights from two distinct attention hops. The 5 sentences below the images are the retrieved sentences. The red colored words indicates increased attention weights on those words}
+  \caption[Image-text retrieval]{This figure visualizes the image-text retrieval. The image on the left is the query image while the images on the right are the attention weights from two distinct attention hops, placed on the image. The 5 sentences below the images are the retrieved sentences. The red-colored words indicate increased attention to those words.}
   \label{fig:image-text-1}
 \end{figure}
 
 
-Figure \ref{fig:text-image}, exhibits the \textit{text-image} retrieval on a randomly chosen query sentence from the \textit{Flickr8k} dataset, together with two arbitrary attention hops. Due to the rather short sentence, both attention hops placed identical weight intensity. Specifically, the increased attention weights are on the most meaningful words such as \textit{hiker}, \textit{snowy}, and \textit{hill}. In addition, on the retrieved images, we can see that all of them contain snowy hills and a person hiking on the hills , which is consistent with the query sentence. The visual attention, unlike the semantic attention, maintains a slight diversity across the two attention hops. The attention hops on some of the retrieved images are playing a different role where one attention hop attends on the hiker and less on the background, whereas the other is doing the exact opposite. However, in most of the images, both of the attention hops attend on the same area of the image. This indicates that the real benefits of the multi-hop attention, over the single-hop attention, are becoming more apparent when dealing with fine-grained use cases.
+Figure \ref{fig:text-image}, exhibits the \textit{text-image} retrieval on a randomly chosen query sentence from the \textit{Flickr8k} dataset, together with two arbitrary attention hops. Due to the rather short sentence, both attention hops placed identical weight intensity on the same words. Specifically, the increased attention weights are on the most meaningful words such as \textit{hiker}, \textit{snowy}, and \textit{hill}. In addition, all of the retrieved images contain snowy hills and a person hiking on the hills, which is consistent with the query sentence. The visual attention, unlike the semantic attention, maintains a slight diversity across the two attention hops. The attention hops on some of the retrieved images are playing a different role where one attention hop attends on the hiker and less on the background, whereas the other is doing the exact opposite. However, in most of the images, both of the attention hops attend on the same area of the image. This indicates that the real benefits of the multi-hop attention, over the single-hop attention, are becoming more apparent when dealing with fine-grained use cases with multi-entity contents.
 
 \begin{figure}
   \centering
-  \includegraphics[width=120mm]{Images/text-image.pdf}
-  \caption[Text-image retrieval]{Visualizing the text-image retrieval. The sentence represents the query where the words with red background indicate increased attention weights on those words. The 5 images on the first row are the 5 retrieved images. The 5 images on the bottom row represent the attention weights from a single attention hop on the retrieved images}
+  \includegraphics[width=110mm]{Images/text-image.pdf}
+  \caption[Text-image retrieval]{This figure visualizes the text-image retrieval. The sentence represents the query where the words with a red background indicate increased attention on those words. The 5 images on the first column are the top 5 retrieved images. The 5 images on the middle column and the 5 images on the column on the right represent the attention weights on the retrieved images from two distinct attention hops.}
   \label{fig:text-image}
 \end{figure}
 
-Figure \ref{fig:image_attn_1} depicts the visual attention across 11 distinct attention hops. As we can see in figure \ref{fig:image_attn_1}, the raw image consists of two different color dogs that are playing with a frisbee. Because of the fine-grained nature of the image, we can observe that the first three attention hops (the second, third and forth image on figure \ref{fig:image_attn_1}), attend on the general outline of the image, or in other words, the attention weights are spread on all 3 entities. The fourth, the fifth, the sixth and the seventh attention hop (the 4 images on the second row of figure \ref{fig:image_attn_1}) attend mainly on the black dog and the frisbee. Lastly, the final four attention hops (the 4 images on the third row of figure \ref{fig:image_attn_1}) attend on the brown dog.
+Figure \ref{fig:image_attn_1} depicts the visual attention across 11 distinct attention hops. As we can see in figure \ref{fig:image_attn_1}, the raw image consists of two different color dogs that are playing with a frisbee. Because of the fine-grained nature of the image, we can observe that the first three visual attention hops (the second, third and forth image on figure \ref{fig:image_attn_1}), attend on the general outline of the image, or in other words, the attention weights are spread on all 3 entities. The fourth, the fifth, the sixth and the seventh attention hop (the 4 images on the second row of figure \ref{fig:image_attn_1}) attend mainly on the black dog and the frisbee. Lastly, the final four attention hops (the 4 images on the third row of figure \ref{fig:image_attn_1}) attend on the brown dog.
 
 \begin{figure}
   \centering
   \includegraphics[width=130mm]{Images/image_attn_80_index.png}
-  \caption[Image multi hop attention 1]{Visualizing the visual attention across 11 distinct attention hops. The original image is the first one on the left while the 11 attention hops are the images with the heat map overlay}
+  \caption[Visual multi-hop attention on a fine-grained image]{This figure illustrates the visual multi-hop attention across 11 distinct attention hops. The original image is the one on the top-left while the 11 attention hops are the images with the heat-map overlay. Since the image is fine-grained, separate attention hops attend on different, yet correlated segments of the image.}
   \label{fig:image_attn_1}
 \end{figure}
 
-Figure \ref{fig:image_attn_2} showcases a scenario where the primary entity is dominant in the image. Consequently, we can observe that the visual attention is predominant around the main entity with little to no correlation between different attention hops.\endgraf
+Figure \ref{fig:image_attn_2} showcases a scenario where the primary entity which is the basketball player dominates the image. Consequently, we can observe that the visual attention is predominant around that entity with little to no correlation between different attention hops. Namely, as state above, the real benefit of the multi-hop attention remains non utilized on image-text samples with single-entity structure.\endgraf
 
 \begin{figure}
   \centering
   \includegraphics[width=130mm]{Images/image_attn_190_index.png}
-  \caption[Image multi hop attention 2]{Visualizing the visual attention across 11 distinct attention hops. The original image is the first one on the left while the 11 attention hops are the images with the heat map overlay}
+  \caption[Visual multi-hop attention on a non-complex image]{This figure illustrates the visual multi-hop attention across 11 distinct attention hops. The original image is the one on the top-left while the 11 attention hops are the images with the heat-map overlay. Because of the modest image contents, there is a lack of diversity between the attention hops.}
   \label{fig:image_attn_2}
 \end{figure}
 
 \section{Ablation studies}
 \subsection{Effect of using multiple attention hops}
-Compared to the additive attention introduced by \cite{bahdanau2014neural} and applied in the visual domain by \cite{xu2015show}, the attention mechanism used in this thesis extends the additive attention by using multiple attention hops instead of just a single one. The motivation for going from a single hop of attention to multiple hops of attention is related to how humans would do the image-text matching. To be specific, a person would iteratively, through a multi-step process pay attention to different aspects of both the image and the sentence so that multiple meanings are extracted from both modalities and matched together.\endgraf
-Figure \ref{fig:attn_hops}, showcases two models that are trained for 10 epochs on the \textit{Flickr8k} dataset and the \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} on the test set is reported for each epoch. As we can see, regardless of the metric, the model that leverages multiple hops of attention outperforms the model that uses a single hop. This suggests obvious superiority of the multi-hop attention \cite{lin2017structured} compared to the single-hop one \cite{bahdanau2014neural, xu2015show} in the image-text matching problem.
+Compared to the additive attention introduced by \citet{bahdanau2014neural} and applied in the visual domain by \citet{xu2015show}, the attention mechanism used in this thesis extends the single hop additive attention by using multiple attention hops instead. The motivation for going from a single hop of attention to multiple hops of attention is related fine-grained structure of images and annotating sentences. Therefore, a person would iteratively, through a multi-step process pay attention to different aspects of both the image and the sentence so that multiple meanings are extracted from both modalities and matched together.\endgraf
+Figure \ref{fig:attn_hops}, showcases two models that are trained for 10 epochs on the \textit{Flickr8k} dataset and the \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} on the test set is reported for each epoch. As we can see, regardless of the metric, the model that leverages multiple hops of attention outperforms the model that uses a single hop. This suggests superiority of the multi-hop attention \cite{lin2017structured} compared to the single-hop one \cite{bahdanau2014neural, xu2015show} in the image-text matching problem.
+
 \begin{figure}
   \centering
   \includegraphics[width=120mm]{Images/single_hop_vs_multi_hop.png}
-  \caption[Single attention hop vs multiple attention hops]{Comparison of two models with random configuration where one of the models uses a single attention hop and the other uses multiple attention hops. Both models are trained for 10 epochs on the \textit{Flickr8k} dataset while their \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} is reported on the test set}
+  \caption[Comparison between single-hop attention and multi-hop attention]{Comparison of two models with random configuration, where one of the models uses single-hop attention and the other uses multi-hop attention. Both models are trained for 10 epochs on the \textit{Flickr8k} dataset while their \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} are reported on the test set. The model that leverages multi-hop attention outperforms the model that uses single-hop attention on all metrics.}
   \label{fig:attn_hops}
 \end{figure}
 
 \subsection{Effect of the attention weights diversification term}
-The problem that arises when using multiple attention hops is redundancy. The purpose of having multiple attention hops can be considered useless in case all attention hops provide highly correlated attention weights. Another explanation of the redundancy can be that shallow saddle points appear on the surface of the loss function, where the model is not fully utilizing its potential. To overcome this issue, I employ a term that intends to maintain diversity between the attention hops and thus push the model towards utilizing its learning ability.\endgraf
-On figure \ref{fig:attn_diverse}, two models that employ \textit{multi-hop} attention are trained on the \textit{Flickr8k} dataset for 10 epochs and their \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} on the test set is reported. The difference between the models is that one of the models minimizes the attention weights diversification term together with the matching loss and the other only minimizes the matching loss. As we can see in the figure, on all 3 metrics, the model that minimizes the attention weights diversification slightly outperforms the model that does not.
+The problem that arises when using multiple attention hops is redundancy of many of the attention hops. The purpose of having multiple attention hops can be considered useless in case all attention hops provide highly correlated attention weights. Another explanation of the redundancy can be that shallow saddle points appear on the surface of the loss function, where the model is not fully utilizing its potential. To overcome this issue, I employ a term to maintain diversity between the attention hops and thus push the model towards utilizing its learning ability.\endgraf
+On figure \ref{fig:attn_diverse}, two models that employ multi-hop attention are trained on the \textit{Flickr8k} dataset for 10 epochs and their \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} on the test set is reported. The difference between the models is that one of the models enforces the attention weights to be diverse and the other does not. As we can see in the figure, on all 3 metrics, the model that minimizes the penalization term together with the matching loss slightly outperforms the model that does not.
+
 \begin{figure}
   \centering
   \includegraphics[width=120mm]{Images/attn_diverse_vs_non_diverse.png}
-  \caption[Attention diversification term]{Comparison of two models sharing the same configuration where one of the models is trained by minimizing the attention weights diversification term and the other without. Both models are trained for 10 epochs on the \textit{Flickr8k} dataset while their \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} is reported on the test set}
+  \caption[Comparison between a model trained with and without attention weights diversification]{Comparison of two models sharing the same configuration where one of the models is trained to minimize the matching loss only while the other minimizes the attention weights diversification term together with the matching loss. Both models are trained for 10 epochs on the \textit{Flickr8k} dataset while their \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} are reported on the test set. The plot of the metrics supports the premise that the attention weights diversification terms help the model to utilize the learning capacity fully.}
   \label{fig:attn_diverse}
 \end{figure}
-Moreover, figure \ref{fig:2_hop_frob} illustrates the outputs of two visual attention hops when the model is trained together with the attention hops diversification term. As we can see on figure \ref{fig:2_hop_frob}, each of the two distinct attention hops either specialize on a certain feature of the image or extends the attended part of the previous attention hop. In this particular case, the first attention hop (The second image from the left), attends mainly on the red ribbon and on the man on the left. Besides, the second attention hop (The third image from the left), extends the first attention hop and attends on the background. 
+
+Moreover, figure \ref{fig:2_hop_frob} illustrates the outputs of two visual attention hops when the model is trained to enforce diverse attention weights. As we can see on figure \ref{fig:2_hop_frob}, each of the two distinct visual attention hops either specialize on a certain feature of the image or extends the attended part of the previous attention hop. In this particular case, the first attention hop (the second image from the left), attends mainly on the red ribbon and on the man on the left. Besides, the second attention hop (the third image from the left), extends the first attention hop and attends on the background. 
+
 \begin{figure}
   \centering
   \includegraphics[width=140mm]{Images/2_hop_frob.png}
-  \caption[Visual attention with attention weights diversification]{Visual attention when the model is trained \textbf{together with} minimizing a term to ensure diversity between the attention hops}
+  \caption[Visual attention of a model trained with attention weights diversification]{Visual attention when the model is trained \textbf{together with} minimizing a term to ensure diversity between the attention hops.}
   \label{fig:2_hop_frob}
 \end{figure}
 
-On the contrary, figure \ref{fig:2_hop_no_frob} depicts a model that is trained without the attention hops diversification term. Here, the attention hops are correlated, which is quite the opposite of figure \ref{fig:2_hop_frob}. Both the first and the second attention hops have placed equivalent attention on the ribbon and the background. Similarly, the attention on the two people is almost indistinguishable between the two attention hops.
+On the contrary, figure \ref{fig:2_hop_no_frob} depicts a model that is trained without enforcing diversity between the attention weights. Here, the attention hops are correlated, which is quite the opposite of figure \ref{fig:2_hop_frob}. Both the first and the second attention hops have placed equivalent attention on the ribbon and the background. Similarly, the attention placed on the two people is almost indistinguishable between the two attention hops.
 \begin{figure}
   \centering
   \includegraphics[width=140mm]{Images/2_hop_no_frob.png}
-  \caption[Visual attention without attention weights diversification]{Visual attention when the model is trained \textbf{without} minimizing a term to ensure diversity between the attention hops}
+  \caption[Visual attention of a model trained without attention weights diversification]{Visual attention when the model is trained \textbf{without} minimizing a term to ensure diversity between the attention hops.}
   \label{fig:2_hop_no_frob}
 \end{figure}
 
 \subsection{Effect of using siamese attention}
 
-The \textit{Siamese neural network} \cite{bromley1994signature} consists of two or more copies of a single neural network that have tied weights. During the ablation studies, I have empirically found that tying the weights of the attention module, even though the inputs come from a completely different source of information does not hurt the performance of the model. On figure \ref{fig:siamese_vs_non_siamese} two models, one using \textit{siamese attention} and one using separate weights for the attention blocks are trained for 10 epochs on the \textit{Flickr8k} dataset and their \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} is reported on the test set. From the figure, we can see that the model with tied attention weights performs at least as good as the one that uses separate weights. This suggests that the attention block  "learns to pay attention" and can be easily reused across modalities.
+The \textit{Siamese neural network} \cite{bromley1994signature} consists of two or more copies of a single neural network that have tied weights. During the ablation studies, I have empirically found that tying the weights of the attention module, even though the inputs come from a completely different source of information does not hurt the performance of the model. On figure \ref{fig:siamese_vs_non_siamese} two models, one using \textit{siamese attention} and one using separate weights for the attention modules are trained for 10 epochs on the \textit{Flickr8k} dataset and their \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} is reported on the test set. From the figure, we can see that the model with tied attention weights performs at least as good as the one that uses separate weights. This suggests that the attention module "learns to pay attention" and can be easily reused across modalities.
+
 \begin{figure}
   \centering
   \includegraphics[width=140mm]{Images/siamese_vs_non_siamese.png}
-  \caption[Siamese vs non siamese attention]{Comparison of two models where one model has attention weights which are tied for both attending on the image and the sentence, and the other uses separate attention weights for the two types of attention}
+  \caption[Comparison between tied and untied visual-semantic multi-hop attention]{This figure represents a comparison between a model that has tied attention weights for both modalities and a model with distinct attention weights for each of the modalities. Both models are trained for 10 epochs on the \textit{Flickr8k} dataset, and the \textit{Recall@1}, \textit{Recall@5}, and \textit{Recall@10} is reported on the test set for each epoch. The less memory demanding model with tied attention weights for both the visual and textual attention module achieves performance at least as good as the one with untied attention weights on all metrics.}
   \label{fig:siamese_vs_non_siamese}
 \end{figure}
 
 \subsection{Effects of using \textit{ELMo}}\label{sec: elmo_results}
 
-As mentioned in section \ref{sec: sentence_encoder}, in this thesis transfer learning is applied on both the image encoder branch, as a pre-trained \textit{ResNet152} \cite{he2016deep} and on the sentence encoder branch, as a pre-trained bidirectional language model to extract \textit{ELMo} \cite{peters2018deep}. Compared to other methods where transfer learning is applied mainly in the image encoder branch, to the best of my knowledge, this work is the first one to leverage \textit{ELMo} \cite{peters2018deep} in the image-text cross-modal retrieval use case. The motivation for transferring knowledge on the sentence encoder side is due to the extreme scarcity of the image-text cross-modal retrieval datasets. Namely, in order for a deep learning model to learn sufficiently good word embeddings, it has to be trained on much bigger datasets \cite{mikolov2013distributed, peters2018deep}. Therefore, figure \ref{fig:elmo_vs_no_elmo} illustrates two models trained on the \textit{Flickr8k} dataset for 10 epochs while the \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} are reported on the test set.
+As mentioned in section \ref{sec: sentence_encoder}, in this thesis transfer learning is applied on both the image encoder branch, as a pre-trained \textit{ResNet152} \cite{he2016deep} and on the sentence encoder branch, as a pre-trained bidirectional language model to obtain \textit{ELMo} \cite{peters2018deep}. To the best of my knowledge, compared to other methods for image-text matching where transfer learning is applied on the image encoder branch, this work is the first one to use \textit{ELMo} \cite{peters2018deep} on the sentence encoder branch. The motivation for transferring knowledge to the sentence encoder is due to the extreme data scarcity of the image-text matching datasets. Namely, in order for a deep learning model to learn sufficiently good word embeddings, it has to be trained on much bigger datasets \cite{mikolov2013distributed, peters2018deep}. Therefore, figure \ref{fig:elmo_vs_no_elmo} illustrates two models trained on the \textit{Flickr8k} dataset for 10 epochs while the \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} are reported on the test set.
 
 \begin{figure}
   \centering
   \includegraphics[width=140mm]{Images/elmo_vs_non_elmo.png}
-  \caption[ELMo vs Non ELMo]{Comparison of two models, one that makes use of \textit{ELMo} \cite{peters2018deep} and another that trains a word embedding matrix from scratch. Besides the difference in how the word embeddings are obtained, these models share identical structure}
+  \caption[Comparison between a model that leverages ELMo and a model that learns word embeddings from scratch]{This figure compares two models, one that makes use of pre-trained \textit{ELMo} \cite{peters2018deep} and another model that trains a word embedding matrix from scratch. Both models are trained for 10 epochs on the \textit{Flickr8k} dataset and their \textit{Recall@1}, \textit{Recall@5} and \textit{Recall@10} is reported on the test set. The model that leverages pre-trained \textit{ELMo} significantly outperforms the mode that learns the word embeddings from scratch.}
   \label{fig:elmo_vs_no_elmo}
 \end{figure}
 
-As we can see in figure \ref{fig:elmo_vs_no_elmo}, the model that uses \textit{ELMo} drastically outperforms the one that learns the word embeddings from scratch. As mentioned above, this is due to insufficient amount of training data compared to how much data is needed to learn sufficiently good word embeddings. On the other hand, the \textit{ELMo} are obtained from a bidirectional language model trained on the 1 Billion words dataset \cite{chelba2013one}, which is a dataset several orders of magnitude more prominent than the ones used to train the \textit{Siamese multi-hop attention} model.
+As we can see in figure \ref{fig:elmo_vs_no_elmo}, the model that uses \textit{ELMo} drastically outperforms the one that learns the word embeddings from scratch. As mentioned above, this is due to insufficient amount of training data compared to how much data is needed to learn sufficiently good word embeddings. On the other hand, \textit{ELMo} are obtained from a bidirectional language model trained on the 1 Billion words dataset \cite{chelba2013one}, which is a dataset several orders of magnitude more prominent than the ones used to train the \textit{Siamese multi-hop attention} model.
 
 %%% Local Variables: 
 %%% mode: latex
