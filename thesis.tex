@@ -56,7 +56,7 @@ especially my promoter and my assistants. I would also like to thank the
 \tableofcontents*
 
 \begin{abstract}
-In this thesis, the problem of multimodal matching in the image-text case is studied. I leverage the fact that usually, multiple entities are present in the modalities, so a model that can focus on different aspects of each modality should overpower simpler models. Moreover, the majority of the approaches that tackle the image-text matching problem are used as a black box, and the correspondence between the matched image and text remains vague. Lastly, the image-text matching datasets are small, and the training data is scarce. Because of that, a heavy emphasis is placed on transferring knowledge from models trained on millions of data samples on different tasks. In this thesis, I present \textit{Siamese multi-hop attention}, a deep learning architecture that overcomes the aforementioned obstacles when doing multimodal matching in the image-text case. \textit{SMHA} is tested on a variety of benchmark datasets that include small ones such as \textit{Pascal1k}, \textit{Flickr8k} as well as medium to large ones such as \textit{Flickr30k} and is found to achieve results competitive to the current state-of-the-art. The code developed is made available at: \href{https://github.com/gorjanradevski/SMHA}{https://github.com/gorjanradevski/SMHA} 
+In this thesis, the problem of image-text multimodal matching is studied. I leverage the fact that usually, multiple entities are present in the modalities, so a model that can focus on different aspects of each modality should overpower simpler models. Moreover, the majority of the approaches that tackle the image-text matching problem are used as a black box, and the correspondence between the matched image and text remains vague. Lastly, the image-text matching datasets are small, and the training data samples are scarce. Because of that, a heavy emphasis is placed on transferring knowledge from models trained on millions of data samples on different tasks. In this thesis, I present \textit{Siamese multi-hop attention}, a deep learning architecture that overcomes the aforementioned obstacles when doing image-text multimodal matching. The \textit{Siamese multi-hop attention} model is tested on a variety of benchmark datasets that include small ones such as \textit{Pascal1k}, \textit{Flickr8k} as well as medium to large ones such as \textit{Flickr30k} and is found to achieve results competitive to the current state-of-the-art. The code developed is made available at: \href{https://github.com/gorjanradevski/SMHA}{https://github.com/gorjanradevski/SMHA} 
 \end{abstract}
 
 % A list of figures and tables is optional
@@ -79,7 +79,8 @@ In this thesis, the problem of multimodal matching in the image-text case is stu
     \textit{ReLU} & Rectified-linear unit \\
     \textit{ELMo} & Embeddings from language Model \\
     \textit{tanh} & Hyperbolic function \\
-    \textit{}
+    \textit{ResNet} & Residual network \\
+    \textit{VGG} &  Visual Geometry Group's neural net \\
   \end{tabularx}
 \end{flushleft}
 %\section*{Symbols}
