@@ -8,9 +8,9 @@ image-text matching},
   assistant={Guillem Collel Taleda}}
 % The following \setup may be removed entirely if no filing card is wanted
 \setup{filingcard,
-  translatedtitle=,
+  translatedtitle=Siamese multi-hop aandacht voor beeld-tekst matching,
   udc=621.3,
-  shortabstract={In this thesis, the problem of image-text matching, an area vital to cross-modal retrieval, is studied. I leverage the fact that usually, multiple entities are present in the modalities, so a model that can focus on different aspects of each modality should overpower simpler models. Moreover, the majority of the approaches that tackle the image-text matching problem are used as a black box, and the correspondence between the matched image and text remains vague. Lastly, the image-text matching datasets are small, and the training data samples are scarce. Because of that, a heavy emphasis is placed on transferring knowledge from models trained on millions of data samples on different tasks. In this thesis, I present \textit{Siamese multi-hop attention}, a deep learning architecture that overcomes the obstacles mentioned above when doing image-text matching. The \textit{Siamese multi-hop attention} model is tested on a variety of benchmark datasets that include small ones such as \textit{Pascal1k}, \textit{Flickr8k} as well as medium to large ones such as \textit{Flickr30k} and is found to achieve results competitive to the current state-of-the-art. The code developed is made available at: \href{https://github.com/gorjanradevski/SMHA}{https://github.com/gorjanradevski/SMHA}}}
+  shortabstract={In this thesis, the problem of image-text matching is studied. I leverage the fact that usually, multiple entities are present in the modalities, so a model that can focus on different aspects of each modality should overpower simpler models. Moreover, the majority of the approaches that tackle the image-text matching problem are used as a black box, and the correspondence between the matched image and text remains vague. Lastly, the image-text matching datasets are small, and the training data samples are scarce. Because of that, a heavy emphasis is placed on transferring knowledge from models trained on millions of data samples on different tasks. In this thesis, I present \textit{Siamese multi-hop attention}, a deep learning architecture that overcomes the obstacles mentioned above when performing image-text matching. The \textit{Siamese multi-hop attention} model is evaluated on the cross-modal retrieval task, which is the principal method of evaluating image-text matching models. To do so, I perform experiments on a variety of cross-modal retrieval benchmark datasets that include small ones such as \textit{Pascal1k}, \textit{Flickr8k} as well as medium to large ones such as \textit{Flickr30k} and achieve results competitive to the current state-of-the-art. The code developed is made available at: \href{https://github.com/gorjanradevski/SMHA}{https://github.com/gorjanradevski/SMHA}}}
 % Uncomment the next line for generating the cover page
 %\setup{coverpageonly}
 % Uncomment the next \setup to generate only the first pages (e.g., if you
@@ -56,7 +56,7 @@ especially my promoter and my assistants. I would also like to thank the
 \tableofcontents*
 
 \begin{abstract}
-In this thesis, the problem of image-text matching, an area vital to cross-modal retrieval, is studied. I leverage the fact that usually, multiple entities are present in the modalities, so a model that can focus on different aspects of each modality should overpower simpler models. Moreover, the majority of the approaches that tackle the image-text matching problem are used as a black box, and the correspondence between the matched image and text remains vague. Lastly, the image-text matching datasets are small, and the training data samples are scarce. Because of that, a heavy emphasis is placed on transferring knowledge from models trained on millions of data samples on different tasks. In this thesis, I present \textit{Siamese multi-hop attention}, a deep learning architecture that overcomes the obstacles mentioned above when doing image-text matching. The \textit{Siamese multi-hop attention} model is tested on a variety of benchmark datasets that include small ones such as \textit{Pascal1k}, \textit{Flickr8k} as well as medium to large ones such as \textit{Flickr30k} and is found to achieve results competitive to the current state-of-the-art. The code developed is made available at: \href{https://github.com/gorjanradevski/SMHA}{https://github.com/gorjanradevski/SMHA} 
+In this thesis, the problem of image-text matching is studied. I leverage the fact that usually, multiple entities are present in the modalities, so a model that can focus on different aspects of each modality should overpower simpler models. Moreover, the majority of the approaches that tackle the image-text matching problem are used as a black box, and the correspondence between the matched image and text remains vague. Lastly, the image-text matching datasets are small, and the training data samples are scarce. Because of that, a heavy emphasis is placed on transferring knowledge from models trained on millions of data samples on different tasks. In this thesis, I present \textit{Siamese multi-hop attention}, a deep learning architecture that overcomes the obstacles mentioned above when performing image-text matching. The \textit{Siamese multi-hop attention} model is evaluated on the cross-modal retrieval task, which is the principal method of evaluating image-text matching models. To do so, I perform experiments on a variety of cross-modal retrieval benchmark datasets that include small ones such as \textit{Pascal1k}, \textit{Flickr8k} as well as medium to large ones such as \textit{Flickr30k} and achieve results competitive to the current state-of-the-art. The code developed is made available at: \href{https://github.com/gorjanradevski/SMHA}{https://github.com/gorjanradevski/SMHA} 
 \end{abstract}
 
 % A list of figures and tables is optional
@@ -80,7 +80,7 @@ In this thesis, the problem of image-text matching, an area vital to cross-modal
     \textit{ELMo} & Embeddings from language model \\
     \textit{tanh} & Hyperbolic function \\
     \textit{ResNet} & Residual network \\
-    \textit{VGG} &  Visual Geometry Group's neural net \\
+    \textit{VGG} &  Visual Geometry Group's neural network \\
     \textit{CNN} &  Convolutional neural network \\
     \textit{R-CNN} &  Region-convolutional neural network \\
     \textit{AlexNet} & Convolutional neural network designed by Alex Krizhevsky \\
@@ -95,7 +95,8 @@ In this thesis, the problem of image-text matching, an area vital to cross-modal
     $\prod_{i}^{n}$ & Product from \textit{i} to \textit{n} \\
     $\sum_{i}^{n}$ & Sum from \textit{i} to \textit{n} \\
     $\sigma$ & Activation function \\
-    $s$ & Scoring function
+    $s$ & Scoring function \\
+    $\epsilon$ & A small number
   \end{tabularx}
 \end{flushleft}
 
